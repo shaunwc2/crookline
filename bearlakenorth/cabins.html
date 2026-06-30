@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cabins — Bear Lake North RV Park &amp; Campground</title>
+  <meta name="description" content="Three furnished one-room cabins at Bear Lake North in St. Charles, Idaho. Full kitchen, linens, TV, shower, and sleeping loft included.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <nav class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="name">Bear Lake North</span>
+      <span class="sub">RV Park &amp; Campground</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="rates.html">Rates</a></li>
+      <li><a href="cabins.html" aria-current="page">Cabins</a></li>
+      <li><a href="rules.html">Rules &amp; Policies</a></li>
+      <li><a href="photos.html">Photos</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="book.html" class="nav-book">Book Now</a></li>
+    </ul>
+    <button class="nav-toggle" aria-label="Toggle navigation" onclick="document.getElementById('navLinks').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <h1>Furnished Cabins</h1>
+    <p>Everything you need — no tent, no gear, just show up and relax.</p>
+  </div>
+</div>
+
+<!-- CABIN OVERVIEW -->
+<section class="bg-white">
+  <div class="container">
+    <div style="display:grid; gap:3rem; align-items:start;">
+
+      <div>
+        <h2>About the Cabins</h2>
+        <p style="margin-top:1rem;">We have three small one-room cabins available for rent. Each cabin is fully furnished — just bring yourself and your food. Linens, dishes, and a small TV are all provided.</p>
+        <p style="margin-top:1rem;">The cabins sleep comfortably for a couple or small family, with a full bed and single bunk, plus a carpeted sleeping loft above the bathroom that has room for several sleeping bags.</p>
+
+        <div style="margin-top:2rem; display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+          <div style="background:var(--cream);padding:1.25rem;border-radius:var(--radius);">
+            <strong style="display:block;margin-bottom:0.5rem;color:var(--green-dark);">🛏 Sleeping</strong>
+            <p style="font-size:0.9rem;color:var(--text-muted);">Full bed with single bunk above; carpeted loft for sleeping bags</p>
+          </div>
+          <div style="background:var(--cream);padding:1.25rem;border-radius:var(--radius);">
+            <strong style="display:block;margin-bottom:0.5rem;color:var(--green-dark);">🍳 Kitchen</strong>
+            <p style="font-size:0.9rem;color:var(--text-muted);">2-burner stovetop, microwave, mini fridge, sink, dishes included</p>
+          </div>
+          <div style="background:var(--cream);padding:1.25rem;border-radius:var(--radius);">
+            <strong style="display:block;margin-bottom:0.5rem;color:var(--green-dark);">🚿 Bathroom</strong>
+            <p style="font-size:0.9rem;color:var(--text-muted);">Private shower and toilet in each cabin</p>
+          </div>
+          <div style="background:var(--cream);padding:1.25rem;border-radius:var(--radius);">
+            <strong style="display:block;margin-bottom:0.5rem;color:var(--green-dark);">📺 Extras</strong>
+            <p style="font-size:0.9rem;color:var(--text-muted);">Small TV, linens provided, ceiling fan</p>
+          </div>
+        </div>
+
+        <div style="margin-top:2rem;padding:1.5rem;background:var(--sand-light);border-radius:var(--radius);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+          <div>
+            <span style="font-family:Georgia,serif;font-size:2rem;color:var(--green);font-weight:bold;">$145</span>
+            <span style="color:var(--text-muted);font-size:0.9rem;"> / night + tax</span>
+          </div>
+          <a href="book.html" class="btn btn-green">Reserve a Cabin</a>
+        </div>
+
+        <div class="notice">
+          Call <a href="tel:2089452941" style="color:var(--blue);">(208) 945-2941</a> with questions or to book by phone.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CABIN PHOTOS -->
+<section class="bg-cream">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Inside the Cabins</h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="images/cabin3.jpg" alt="Exterior view of Bear Lake North cabins in summer">
+      </div>
+      <div class="gallery-item">
+        <img src="images/cabinbeds.JPG" alt="Cabin interior showing bunk beds and entrance door">
+      </div>
+      <div class="gallery-item">
+        <img src="images/cabinkitchen1.JPG" alt="Cabin kitchen and dining area">
+      </div>
+      <div class="gallery-item">
+        <img src="images/cabinkitchen2.JPG" alt="Cabin sleeping loft with ladder">
+      </div>
+      <div class="gallery-item">
+        <img src="images/cabinkitchen3.JPG" alt="Cabin kitchen counter with microwave, stovetop, and mini fridge">
+      </div>
+      <div class="gallery-item">
+        <img src="images/cabintable.JPG" alt="Cabin dining area and kitchen">
+      </div>
+      <!-- TODO: Add more cabin exterior photos (summer shots) when available -->
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <div class="container">
+    <h2>Book a Cabin</h2>
+    <p>Reserve online anytime or call us 9 a.m. – 9 p.m. Deposit of one night required to confirm.</p>
+    <a class="phone" href="tel:2089452941">(208) 945-2941</a>
+    <div class="flex-wrap-center">
+      <a href="book.html" class="btn btn-outline">Reserve Online</a>
+      <a href="rates.html" class="btn btn-outline">View All Rates</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="name">Bear Lake North</span>
+        <p>Family-owned RV park and campground in St. Charles, Idaho — your home base for Bear Lake adventures since 2003.</p>
+        <a href="tel:2089452941" class="footer-phone">(208) 945-2941</a>
+      </div>
+      <div>
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="rates.html">Rates</a></li>
+          <li><a href="cabins.html">Cabins</a></li>
+          <li><a href="rules.html">Rules &amp; Policies</a></li>
+          <li><a href="photos.html">Photos</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="book.html">Book Now</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Visit Us</h4>
+        <ul>
+          <li style="color:rgba(255,255,255,0.65);font-size:0.875rem;">220 N. Main</li>
+          <li style="color:rgba(255,255,255,0.65);font-size:0.875rem;">St. Charles, ID 83272</li>
+          <li style="margin-top:0.75rem;"><a href="contact.html">Get directions →</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 Bear Lake North RV Park &amp; Campground</span>
+      <span>St. Charles, Idaho</span>
+      <a href="https://crookline.com" class="built-by">
+        <img src="images/sheep.svg" alt="" />Built by Crookline
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
