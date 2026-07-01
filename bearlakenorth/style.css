@@ -77,19 +77,17 @@ header {
   margin: 0 auto;
   padding: 0 1.25rem;
 }
-.nav-logo { display: flex; flex-direction: column; line-height: 1.1; }
-.nav-logo .name {
-  font-family: Georgia, serif;
-  font-size: 1.15rem;
-  font-weight: bold;
-  color: var(--white);
-  letter-spacing: 0.02em;
+.nav-logo {
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
 }
-.nav-logo .sub {
-  font-size: 0.65rem;
-  color: var(--blue-light);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.nav-logo img {
+  display: block;
+  height: 40px;
+  width: auto;
 }
 .nav-links {
   display: none;
