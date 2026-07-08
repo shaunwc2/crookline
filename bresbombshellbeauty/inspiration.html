@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact | Bres Bombshell Beauty</title>
+  <title>Inspiration | Bres Bombshell Beauty</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,20 +22,21 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="services.html">Services</a></li>
           <li><a href="gallery.html">Gallery</a></li>
-          <li><a href="inspiration.html">Inspiration</a></li>
-          <li><a href="contact.html" aria-current="page">Contact</a></li>
+          <li><a href="inspiration.html" aria-current="page">Inspiration</a></li>
+          <li><a href="contact.html">Contact</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <main>
-    <h1>Contact</h1>
-
-    <section class="contact-info">
-      <p>Hours: By appointment</p>
-      <p>Location: Brigham City, UT</p>
-      <p><a href="https://www.instagram.com/bresbombshellbeauty" target="_blank" rel="noopener">@bresbombshellbeauty</a> on Instagram</p>
+    <h1>Inspiration</h1>
+    <section class="inspiration">
+      <h3>This Season's Looks</h3>
+      <!-- Populated by pinterest-inspiration.js — picks the board automatically
+           based on the visitor's date. Set the Pinterest username/fallback
+           board at the top of that file. -->
+      <div id="pinterest-board-container" class="pinterest-board-container"></div>
     </section>
   </main>
 
@@ -44,5 +45,6 @@
   </footer>
 
   <script src="nav.js"></script>
+  <script src="pinterest-inspiration.js"></script>
 </body>
 </html>

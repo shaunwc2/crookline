@@ -13,12 +13,17 @@
     <div class="nav-wrap">
       <a class="brand" href="index.html">
         <img class="brand-icon" src="images/logo-icon.svg" alt="Bre's Bombshell Beauty">
+        <img class="brand-wordmark" src="images/logo-wordmark.svg" alt="" aria-hidden="true">
       </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
       <nav>
-        <ul class="site-nav">
+        <ul class="site-nav" id="site-nav">
           <li><a href="index.html" aria-current="page">Home</a></li>
           <li><a href="services.html">Services</a></li>
           <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="inspiration.html">Inspiration</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </nav>
@@ -81,5 +86,6 @@
     <p><!-- PLACEHOLDER: city/service area --> Serving [City, State]</p>
   </footer>
 
+  <script src="nav.js"></script>
 </body>
 </html>

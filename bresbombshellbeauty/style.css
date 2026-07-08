@@ -72,12 +72,24 @@ img {
 .brand {
   display: flex;
   align-items: center;
+  gap: 0.6rem;
   text-decoration: none;
 }
 
 .brand-icon {
   height: 56px;
   width: auto;
+}
+
+.brand-wordmark {
+  height: 26px;
+  width: auto;
+}
+
+@media (max-width: 480px) {
+  .brand-wordmark {
+    display: none;
+  }
 }
 
 .site-nav {
@@ -96,6 +108,62 @@ img {
 
 .site-nav a[aria-current="page"] {
   border-bottom: 2px solid var(--rose-gold-dark);
+}
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.nav-toggle span {
+  display: block;
+  height: 2px;
+  background: var(--charcoal);
+  border-radius: 2px;
+}
+
+@media (max-width: 700px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  .site-header .nav-wrap {
+    position: relative;
+  }
+
+  .site-header nav {
+    order: 3;
+    width: 100%;
+  }
+
+  .site-nav {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    padding-top: 0.5rem;
+  }
+
+  .site-nav.is-open {
+    display: flex;
+  }
+
+  .site-nav li {
+    border-top: 1px solid var(--cream-dark);
+  }
+
+  .site-nav a {
+    display: block;
+    padding: 0.75rem 0.25rem;
+  }
 }
 
 /* Hero */
@@ -250,7 +318,7 @@ h1, h2, h3 {
 }
 
 .inspiration h3 {
-  margin-top: -0.5rem;
+  margin-top: 0;
   font-weight: normal;
   color: var(--mauve);
 }
