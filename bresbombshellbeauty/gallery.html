@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery | Bres Bombshell Beauty</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html">
+        <img class="brand-icon" src="images/logo-icon.svg" alt="Bre's Bombshell Beauty">
+      </a>
+      <nav>
+        <ul class="site-nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="gallery.html" aria-current="page">Gallery</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>Gallery</h1>
+    <p class="placeholder">
+      PLACEHOLDER: Instagram feed integration undecided (see bbsb.md).
+      Option A = SnapWidget embed, Option B = GitHub Actions + Graph API sync to static JSON.
+      Grid below stands in for real photos until the client sends a batch or the feed is wired up.
+    </p>
+
+    <div class="gallery-grid">
+      <div class="tile">Photo coming soon</div>
+      <div class="tile">Photo coming soon</div>
+      <div class="tile">Photo coming soon</div>
+      <div class="tile">Photo coming soon</div>
+      <div class="tile">Photo coming soon</div>
+      <div class="tile">Photo coming soon</div>
+      <div class="tile">Photo coming soon</div>
+      <div class="tile">Photo coming soon</div>
+    </div>
+
+    <p><a href="https://www.instagram.com/bresbombshellbeauty" target="_blank" rel="noopener">See more on Instagram &rarr;</a></p>
+
+    <section class="inspiration">
+      <h2>Inspiration</h2>
+      <h3>This Season's Looks</h3>
+      <!-- Populated by pinterest-inspiration.js — picks the board automatically
+           based on the visitor's date. Set the Pinterest username/fallback
+           board at the top of that file. -->
+      <div id="pinterest-board-container" class="pinterest-board-container"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Bres Bombshell Beauty. All rights reserved.</p>
+  </footer>
+
+  <script src="pinterest-inspiration.js"></script>
+</body>
+</html>
