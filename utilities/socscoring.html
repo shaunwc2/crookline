@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="color-scheme" content="dark" />
+  <title>Shards of Creation — Score Card</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="socscoring.css" />
+</head>
+<body>
+
+  <nav>
+    <a class="nav-brand" href="index.html">Crookline / Utilities</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Utilities</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="game-header">
+      <img class="game-logo" src="../assets/SoCLogo.svg" alt="" />
+      <img class="game-title" src="../assets/SoCTitle.svg" alt="Brandon Sanderson's Shards of Creation" />
+      <p class="game-subtitle">Score Card</p>
+    </div>
+
+    <div class="setup-bar">
+      <div class="setup-group">
+        <span>Players</span>
+        <div class="player-count-group" id="player-count-group"></div>
+      </div>
+      <button class="reset-btn" id="reset-btn" type="button">Reset scores</button>
+    </div>
+
+    <p class="score-note">Enter the shards each player collected — points and Resonance are calculated automatically.</p>
+
+    <div class="section-card">
+      <h2 class="section-title">Shards in Play</h2>
+      <div class="shard-select-grid" id="shard-select-grid"></div>
+    </div>
+
+    <div id="player-cards"></div>
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'crookline-socscoring-v1';
+    const MAX_PLAYERS = 4;
+    const MAX_SHARDS = 5;
+
+    const SHARD_NAMES = [
+      'Devotion', 'Dominion', 'Preservation', 'Ruin', 'Odium',
+      'Cultivation', 'Honor', 'Autonomy', 'Ambition'
+    ];
+
+    const SHARD_ROWS = { '2-3': 4, '4': 5 };
+
+    const SHARD_POINTS = {
+      0: 0, 1: 1, 2: 3, 3: 6, 4: 10, 5: 15, 6: 21, 7: 28, 8: 36,
+      9: 45, 10: 55, 11: 66, 12: 78, 13: 91, 14: 105, 15: 120
+    };
+
+    const RESONANCE_POINTS = {
+      '2-3': { 0: 0, 1: 5, 2: 10, 3: 20, 4: 40, 5: 80 },
+      '4':   { 0: 0, 1: 8, 2: 16, 3: 32, 4: 64 }
+    };
+
+    function shardPoints(n) {
+      n = Math.max(0, Math.floor(Number(n)) || 0);
+      if (n >= 16) return 136;
+      return SHARD_POINTS[n];
+    }
+
+    function resonancePoints(mode, sets) {
+      const table = RESONANCE_POINTS[mode];
+      const maxSets = Math.max(...Object.keys(table).map(Number));
+      sets = Math.max(0, Math.floor(Number(sets)) || 0);
+      sets = Math.min(sets, maxSets);
+      return table[sets];
+    }
+
+    function modeFor(playerCount) {
+      return playerCount >= 4 ? '4' : '2-3';
+    }
+
+    function defaultState() {
+      return {
+        playerCount: 4,
+        playerNames: Array.from({ length: MAX_PLAYERS }, (_, i) => `Player ${i + 1}`),
+        shardLabels: SHARD_NAMES.slice(0, MAX_SHARDS),
+        shardCounts: Array.from({ length: MAX_SHARDS }, () => Array(MAX_PLAYERS).fill(0))
+      };
+    }
+
+    function normalizeState(raw) {
+      const base = defaultState();
+      if (!raw || typeof raw !== 'object') return base;
+      try {
+        if ([2, 3, 4].includes(raw.playerCount)) base.playerCount = raw.playerCount;
+        if (Array.isArray(raw.playerNames)) {
+          raw.playerNames.forEach((n, i) => { if (i < MAX_PLAYERS && typeof n === 'string') base.playerNames[i] = n; });
+        }
+        if (Array.isArray(raw.shardLabels)) {
+          raw.shardLabels.forEach((n, i) => { if (i < MAX_SHARDS && SHARD_NAMES.includes(n)) base.shardLabels[i] = n; });
+        }
+        if (Array.isArray(raw.shardCounts)) {
+          raw.shardCounts.forEach((row, i) => {
+            if (i < MAX_SHARDS && Array.isArray(row)) {
+              row.forEach((v, j) => { if (j < MAX_PLAYERS) base.shardCounts[i][j] = Number(v) || 0; });
+            }
+          });
+        }
+      } catch (e) { /* fall back to defaults on any shape mismatch */ }
+      return base;
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? normalizeState(JSON.parse(raw)) : defaultState();
+      } catch (e) {
+        return defaultState();
+      }
+    }
+
+    function saveState() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+    }
+
+    let state = loadState();
+
+    const countGroup = document.getElementById('player-count-group');
+    const shardSelectGrid = document.getElementById('shard-select-grid');
+    const playerCards = document.getElementById('player-cards');
+    const resetBtn = document.getElementById('reset-btn');
+
+    function renderPlayerCountButtons() {
+      countGroup.innerHTML = '';
+      [2, 3, 4].forEach(n => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'count-btn' + (state.playerCount === n ? ' active' : '');
+        btn.textContent = n;
+        btn.addEventListener('click', () => {
+          if (state.playerCount === n) return;
+          state.playerCount = n;
+          saveState();
+          renderPlayerCountButtons();
+          render();
+        });
+        countGroup.appendChild(btn);
+      });
+    }
+
+    function render() {
+      const mode = modeFor(state.playerCount);
+      const rows = SHARD_ROWS[mode];
+      const players = state.playerCount;
+
+      shardSelectGrid.innerHTML = '';
+      for (let s = 0; s < rows; s++) {
+        const select = document.createElement('select');
+        select.className = 'label-select';
+        select.setAttribute('aria-label', `Shard ${s + 1} type`);
+        SHARD_NAMES.forEach(name => {
+          const opt = document.createElement('option');
+          opt.value = name;
+          opt.textContent = name;
+          if (name === state.shardLabels[s]) opt.selected = true;
+          select.appendChild(opt);
+        });
+        select.addEventListener('change', () => {
+          state.shardLabels[s] = select.value;
+          saveState();
+          refreshShardOptions();
+          document.querySelectorAll(`[data-shard-label="${s}"]`).forEach(el => {
+            el.textContent = select.value;
+          });
+          document.querySelectorAll(`input.count-input[data-shard-index="${s}"]`).forEach(el => {
+            el.setAttribute('aria-label', `${select.value} count for ${state.playerNames[Number(el.dataset.playerIndex)]}`);
+          });
+        });
+        shardSelectGrid.appendChild(select);
+      }
+
+      playerCards.innerHTML = '';
+      for (let p = 0; p < players; p++) {
+        const card = document.createElement('div');
+        card.className = 'section-card player-card';
+
+        const header = document.createElement('div');
+        header.className = 'player-card-header';
+        const nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.className = 'name-input';
+        nameInput.value = state.playerNames[p];
+        nameInput.setAttribute('aria-label', `Player ${p + 1} name`);
+        nameInput.addEventListener('input', () => {
+          state.playerNames[p] = nameInput.value;
+          saveState();
+        });
+        header.appendChild(nameInput);
+        card.appendChild(header);
+
+        const rowsWrap = document.createElement('div');
+        rowsWrap.className = 'player-rows';
+        for (let s = 0; s < rows; s++) {
+          const row = document.createElement('div');
+          row.className = 'player-row';
+          const label = document.createElement('span');
+          label.className = 'player-label';
+          label.dataset.shardLabel = String(s);
+          label.textContent = state.shardLabels[s];
+          const valueWrap = document.createElement('div');
+          valueWrap.className = 'row-value';
+          const input = document.createElement('input');
+          input.type = 'number';
+          input.min = '0';
+          input.inputMode = 'numeric';
+          input.className = 'count-input';
+          input.dataset.shardIndex = String(s);
+          input.dataset.playerIndex = String(p);
+          input.value = state.shardCounts[s][p];
+          input.setAttribute('aria-label', `${state.shardLabels[s]} count for ${state.playerNames[p]}`);
+          input.addEventListener('input', () => {
+            state.shardCounts[s][p] = Number(input.value) || 0;
+            saveState();
+            updateComputed();
+          });
+          const pts = document.createElement('span');
+          pts.className = 'pts-label';
+          pts.id = `pts-${s}-${p}`;
+          valueWrap.appendChild(input);
+          valueWrap.appendChild(pts);
+          row.appendChild(label);
+          row.appendChild(valueWrap);
+          rowsWrap.appendChild(row);
+        }
+
+        const resRow = document.createElement('div');
+        resRow.className = 'player-row resonance-row';
+        const resLabel = document.createElement('span');
+        resLabel.className = 'player-label';
+        resLabel.textContent = 'Resonance';
+        const resValueWrap = document.createElement('div');
+        resValueWrap.className = 'row-value';
+        const sets = document.createElement('span');
+        sets.className = 'resonance-sets';
+        sets.id = `res-${p}`;
+        const respts = document.createElement('span');
+        respts.className = 'pts-label';
+        respts.id = `respts-${p}`;
+        resValueWrap.appendChild(sets);
+        resValueWrap.appendChild(respts);
+        resRow.appendChild(resLabel);
+        resRow.appendChild(resValueWrap);
+        rowsWrap.appendChild(resRow);
+
+        const totalRow = document.createElement('div');
+        totalRow.className = 'player-row total-row';
+        const totalLabel = document.createElement('span');
+        totalLabel.className = 'player-label';
+        totalLabel.textContent = 'Total';
+        const totalValue = document.createElement('span');
+        totalValue.className = 'total-value';
+        totalValue.id = `total-${p}`;
+        totalRow.appendChild(totalLabel);
+        totalRow.appendChild(totalValue);
+        rowsWrap.appendChild(totalRow);
+
+        card.appendChild(rowsWrap);
+        playerCards.appendChild(card);
+      }
+
+      refreshShardOptions();
+      updateComputed();
+    }
+
+    function refreshShardOptions() {
+      const selects = Array.from(shardSelectGrid.querySelectorAll('select.label-select'));
+      const chosen = selects.map(sel => sel.value);
+      selects.forEach((select, idx) => {
+        const current = chosen[idx];
+        const available = SHARD_NAMES.filter(name => name === current || !chosen.includes(name));
+        select.innerHTML = '';
+        available.forEach(name => {
+          const opt = document.createElement('option');
+          opt.value = name;
+          opt.textContent = name;
+          if (name === current) opt.selected = true;
+          select.appendChild(opt);
+        });
+      });
+    }
+
+    function updateComputed() {
+      const mode = modeFor(state.playerCount);
+      const rows = SHARD_ROWS[mode];
+      const players = state.playerCount;
+      const totals = Array(players).fill(0);
+
+      for (let s = 0; s < rows; s++) {
+        for (let p = 0; p < players; p++) {
+          const pts = shardPoints(state.shardCounts[s][p]);
+          totals[p] += pts;
+          const label = document.getElementById(`pts-${s}-${p}`);
+          if (label) label.textContent = `${pts} pt${pts === 1 ? '' : 's'}`;
+        }
+      }
+
+      for (let p = 0; p < players; p++) {
+        const counts = [];
+        for (let s = 0; s < rows; s++) counts.push(state.shardCounts[s][p]);
+        const sets = rows > 0 ? Math.min(...counts) : 0;
+        const pts = resonancePoints(mode, sets);
+        totals[p] += pts;
+        const setsLabel = document.getElementById(`res-${p}`);
+        if (setsLabel) setsLabel.textContent = `${sets} set${sets === 1 ? '' : 's'}`;
+        const ptsLabel = document.getElementById(`respts-${p}`);
+        if (ptsLabel) ptsLabel.textContent = `${pts} pt${pts === 1 ? '' : 's'}`;
+      }
+
+      const maxTotal = Math.max(...totals);
+      for (let p = 0; p < players; p++) {
+        const cell = document.getElementById(`total-${p}`);
+        if (!cell) continue;
+        cell.textContent = totals[p];
+        cell.classList.toggle('winner', maxTotal > 0 && totals[p] === maxTotal);
+      }
+    }
+
+    resetBtn.addEventListener('click', () => {
+      if (!confirm('Reset all scores for this game? Player names stay the same.')) return;
+      state.shardCounts = Array.from({ length: MAX_SHARDS }, () => Array(MAX_PLAYERS).fill(0));
+      saveState();
+      render();
+    });
+
+    renderPlayerCountButtons();
+    render();
+  </script>
+
+</body>
+</html>
