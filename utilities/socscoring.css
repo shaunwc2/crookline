@@ -233,6 +233,11 @@
   border-color: var(--accent);
 }
 
+.count-input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
 .pts-label {
   display: block;
   font-size: 0.7rem;

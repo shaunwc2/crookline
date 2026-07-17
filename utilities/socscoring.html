@@ -220,7 +220,8 @@
           input.className = 'count-input';
           input.dataset.shardIndex = String(s);
           input.dataset.playerIndex = String(p);
-          input.value = state.shardCounts[s][p];
+          input.placeholder = '0';
+          input.value = state.shardCounts[s][p] === 0 ? '' : state.shardCounts[s][p];
           input.setAttribute('aria-label', `${state.shardLabels[s]} count for ${state.playerNames[p]}`);
           input.addEventListener('input', () => {
             state.shardCounts[s][p] = Number(input.value) || 0;
